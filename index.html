@@ -1,81 +1,63 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Station Assignment</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 20px;
-            padding: 0;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        input[type="number"],
-        input[type="text"] {
-            padding: 8px;
-            margin-bottom: 10px;
-            width: 200px;
-        }
-
-        button {
-            padding: 10px 20px;
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
+  <title>Station Assignment</title>
+  <style>
+    /* Your CSS styles */
+  </style>
 </head>
 <body>
 
-    <h1>Station Assignment</h1>
+  <h1>Station Assignment</h1>
 
-    <script>
-        let stations = [];
-        let people = [];
+  <div id="stationsList"></div>
 
-        function addStations() {
-            let numStations = parseInt(prompt("How many stations do you want to add:"));
-            for (let i = 0; i < numStations; i++) {
-                let newStation = prompt("Add station:");
-                stations.push(newStation);
-            }
+  <script>
+    let stations = [];
+    let people = [];
+
+    function addStations() {
+      let numStations = parseInt(prompt("How many stations do you want to add:"));
+      for (let i = 0; i < numStations; i++) {
+        let newStation = prompt("Add station:");
+        stations.push({ name: newStation, assignedPeople: [] });
+      }
+    }
+
+    function addPeople() {
+      let numPeople = parseInt(prompt("How many people do you want to add:"));
+      for (let i = 0; i < numPeople; i++) {
+        let newPerson = prompt("Add person:");
+        people.push(newPerson);
+      }
+    }
+
+    function assignPeople() {
+      for (let i = 0; i < stations.length; i++) {
+        let numAssigned = parseInt(prompt("How many people are assigned to " + stations[i].name + ":"));
+        for (let j = 0; j < numAssigned; j++) {
+          if (people.length === 0) {
+            alert("No more people available!");
+            return;
+          }
+          let personAssigned = people.splice(Math.floor(Math.random() * people.length), 1)[0];
+          stations[i].assignedPeople.push(personAssigned);
         }
+      }
+    }
 
-        function addPeople() {
-            let numPeople = parseInt(prompt("How many people do you want to add:"));
-            for (let i = 0; i < numPeople; i++) {
-                let newPerson = prompt("Add person:");
-                people.push(newPerson);
-            }
-        }
+    addStations();
+    addPeople();
+    assignPeople();
 
-        function assignPeople() {
-            for (let i = 0; i < stations.length; i++) {
-                let numAssigned = parseInt(prompt("How many people are assigned to " + stations[i] + ":"));
-                for (let j = 0; j < numAssigned; j++) {
-                if (people.length === 0) {
-                    alert("No more people available!");
-                    return;
-                }
-                let personAssigned = people.splice(Math.floor(Math.random() * people.length), 1)[0];
-                console.log(personAssigned);
-                }
-            }
-        }
-
-        addStations();
-        addPeople();
-        assignPeople();
-    </script>
+    // Display stations and assigned people
+    let stationsList = document.getElementById("stationsList");
+    stations.forEach(station => {
+      let stationDiv = document.createElement("div");
+      stationDiv.innerHTML = `<strong>${station.name}</strong>: ${station.assignedPeople.join(", ")}`;
+      stationsList.appendChild(stationDiv);
+    });
+  </script>
 
 </body>
 </html>
