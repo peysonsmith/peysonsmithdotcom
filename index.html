@@ -3,7 +3,36 @@
 <head>
   <title>Station Assignment</title>
   <style>
-    /* Your CSS styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 20px;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .station {
+      background-color: #fff;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .station-name {
+      font-weight: bold;
+      color: #1e90ff;
+      margin-bottom: 5px;
+    }
+
+    .assigned-people {
+      font-style: italic;
+      color: #555;
+    }
   </style>
 </head>
 <body>
@@ -50,11 +79,12 @@
     addPeople();
     assignPeople();
 
-    // Display stations and assigned people
     let stationsList = document.getElementById("stationsList");
     stations.forEach(station => {
       let stationDiv = document.createElement("div");
-      stationDiv.innerHTML = `<strong>${station.name}</strong>: ${station.assignedPeople.join(", ")}`;
+      stationDiv.classList.add("station");
+      stationDiv.innerHTML = `<div class="station-name">${station.name}</div>
+                              <div class="assigned-people">${station.assignedPeople.join(", ")}</div>`;
       stationsList.appendChild(stationDiv);
     });
   </script>
