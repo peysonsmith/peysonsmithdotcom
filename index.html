@@ -3,7 +3,36 @@
 <head>
   <title>Station Assignment</title>
   <style>
-    /* Your existing CSS styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 20px;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .station {
+      background-color: #fff;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .station-name {
+      font-weight: bold;
+      color: #1e90ff;
+      margin-bottom: 5px;
+    }
+
+    .assigned-people {
+      font-style: italic;
+      color: #555;
+    }
   </style>
 </head>
 <body>
@@ -12,7 +41,10 @@
 
   <div id="stationsList"></div>
 
+  <input type="text" id="stationInput" placeholder="Enter station name">
   <button onclick="addStation()">Add Station</button>
+
+  <input type="text" id="personInput" placeholder="Enter person's name">
   <button onclick="addPerson()">Add Person</button>
 
   <script>
@@ -20,17 +52,19 @@
     let people = [];
 
     function addStation() {
-      let newStation = prompt("Add station:");
+      let newStation = document.getElementById("stationInput").value.trim();
       if (newStation) {
         stations.push({ name: newStation, assignedPeople: [] });
         displayStations();
+        document.getElementById("stationInput").value = ""; // Clear the input field
       }
     }
 
     function addPerson() {
-      let newPerson = prompt("Add person:");
+      let newPerson = document.getElementById("personInput").value.trim();
       if (newPerson) {
         people.push(newPerson);
+        document.getElementById("personInput").value = ""; // Clear the input field
       }
     }
 
