@@ -87,11 +87,6 @@
       displayStations();
     }
 
-    function increaseAssignments(stationIndex) {
-      stations[stationIndex].numAssigned++;
-      displayStations();
-    }
-
     function displayStations() {
       let stationsList = document.getElementById("stationsList");
       stationsList.innerHTML = ""; // Clear previous content
@@ -102,7 +97,6 @@
         stationDiv.innerHTML = `<div class="station-name">${station.name}</div>
                                 <div class="assigned-people">${station.assignedPeople.join(", ")}</div>
                                 <div class="station-buttons">
-                                  <button onclick="increaseAssignments(${index})">+</button>
                                   <input type="number" id="assignInput${index}" placeholder="Assign">
                                   <button onclick="assignPeople(${index}, document.getElementById('assignInput${index}').value)">Assign</button>
                                 </div>`;
