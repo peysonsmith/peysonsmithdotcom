@@ -220,8 +220,12 @@
           assignControls.classList.add("assign-controls");
           assignControls.innerHTML = `
             <input type="number" id="assignInput${stationIndex}" placeholder="Assign">
+            <input type="text" id="startTimeInput${stationIndex}" placeholder="Start Time">
+            <input type="text" id="endTimeInput${stationIndex}" placeholder="End Time">
             <button onclick="assignPeople(${stationIndex}, 
-              document.getElementById('assignInput${stationIndex}').value)">Assign</button>
+              document.getElementById('assignInput${stationIndex}').value,
+              document.getElementById('startTimeInput${stationIndex}').value,
+              document.getElementById('endTimeInput${stationIndex}').value)">Assign</button>
           `;
       
           stationDiv.appendChild(stationHeader);
@@ -229,21 +233,21 @@
       
           let assignedPeopleDiv = document.createElement("div");
           assignedPeopleDiv.classList.add("assigned-people");
-          assignedPeopleDiv.innerHTML = `
-            <strong>Assigned People:</strong>
-            <ul>
-              ${station.assignedPeople.map((person, personIndex) => {
-                return `<li onclick="handlePersonClick(${personIndex}, ${stationIndex})">${person.name}</li>`;
-              }).join("")}
-            </ul>
-          `;
+          assignedPeopleDiv.innerHTML = `<strong>Assigned People:</strong><ul>${station.assignedPeople.map((person, personIndex) => {
+            const startTime = personIndex * (24 / station.assignedPeople.length); // Assuming a 24-hour range for simplicity
+            const endTime = (personIndex + 1) * (24 / station.assignedPeople.length);
+      
+            return `<li onclick="handlePersonClick(${personIndex}, ${stationIndex})">
+                      ${person.name} 
+                      <span>(Start Time: ${startTime.toFixed(2)} - End Time: ${endTime.toFixed(2)})</span>
+                   </li>`;
+          }).join("")}</ul></div>`;
           
           stationDiv.appendChild(assignedPeopleDiv);
       
           stationsList.appendChild(stationDiv);
         });
       }
-
 
     </script>
   </div>
