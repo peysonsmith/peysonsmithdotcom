@@ -35,6 +35,16 @@
       font-size: 18px;
     }
 
+    .assigned-people div {
+      display: inline-block;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    .assigned-people div:hover {
+      text-decoration: line-through;
+    }
+
     .station-buttons {
       margin-top: 20px;
     }
@@ -150,6 +160,10 @@
       }
     }
 
+    function handlePersonClick(personIndex, stationIndex) {
+      removePerson(personIndex, stationIndex);
+    }
+
     function displayStations() {
       let stationsList = document.getElementById("stationsList");
       stationsList.innerHTML = ""; // Clear previous content
@@ -161,15 +175,8 @@
                                 <button onclick="removeStation(${stationIndex})">Remove</button></div>
                                 <div class="assigned-people">
                                   ${station.assignedPeople.map((person, personIndex) => {
-                                    return `<div>${person.name} - Time Slots: 
-                                            <input type="text" class="time-slot-input" 
-                                              id="timeSlotInput${personIndex}_${stationIndex}" 
-                                              placeholder="Add time slot">
-                                            <button onclick="addTimeSlot(${stationIndex}, ${personIndex}, 
-                                              document.getElementById('timeSlotInput${personIndex}_${stationIndex}').value)">
-                                              Add Time Slot</button>
-                                            <button onclick="removePerson(${personIndex}, ${stationIndex})">Remove</button></div>`;
-                                  }).join("<br>")}</div>
+                                    return `<div onclick="handlePersonClick(${personIndex}, ${stationIndex})">${person.name}</div>`;
+                                  }).join("")}</div>
                                 <div class="station-buttons">
                                   <input type="number" id="assignInput${stationIndex}" placeholder="Assign">
                                   <button onclick="assignPeople(${stationIndex}, 
