@@ -5,7 +5,7 @@
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f4f4;
+      background-color: #f0f0f0;
       margin: 20px;
       padding: 0;
     }
@@ -25,13 +25,13 @@
 
     .station-name {
       font-weight: bold;
-      color: #1e90ff;
+      color: #2c3e50;
       margin-bottom: 10px;
       font-size: 24px;
     }
 
     .assigned-people {
-      color: #555;
+      color: #34495e;
       font-size: 18px;
     }
 
@@ -42,7 +42,7 @@
     .station-buttons button {
       padding: 8px 16px;
       font-size: 16px;
-      background-color: #1e90ff;
+      background-color: #3498db;
       color: #fff;
       border: none;
       border-radius: 5px;
@@ -51,7 +51,7 @@
     }
 
     .station-buttons button:hover {
-      background-color: #147bcd;
+      background-color: #2980b9;
     }
 
     .time-slot-input {
@@ -66,7 +66,7 @@
       margin-top: 5px;
       padding: 6px 12px;
       font-size: 14px;
-      background-color: #4CAF50;
+      background-color: #2ecc71;
       color: #fff;
       border: none;
       border-radius: 3px;
@@ -75,7 +75,7 @@
     }
 
     .add-time-slot-btn:hover {
-      background-color: #45a049;
+      background-color: #27ae60;
     }
   </style>
 </head>
@@ -85,10 +85,10 @@
 
   <div id="stationsList"></div>
 
-  <input type="text" id="stationInput" placeholder="Enter station name">
+  <input type="text" id="stationInput" placeholder="Enter station name" onkeypress="handleKeyPress(event, 'addStation')">
   <button onclick="addStation()">Add Station</button>
 
-  <input type="text" id="personInput" placeholder="Enter person's name">
+  <input type="text" id="personInput" placeholder="Enter person's name" onkeypress="handleKeyPress(event, 'addPerson')">
   <button onclick="addPerson()">Add Person</button>
 
   <script>
