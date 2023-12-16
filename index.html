@@ -209,23 +209,41 @@
         stations.forEach((station, stationIndex) => {
           let stationDiv = document.createElement("div");
           stationDiv.classList.add("station");
-          stationDiv.innerHTML = `<div class="station-name" onclick="removeStation(${stationIndex})">${station.name} 
-                                  <div class="assign-controls">
-                                    <input type="number" id="assignInput${stationIndex}" placeholder="Assign">
-                                    <button onclick="assignPeople(${stationIndex}, 
-                                      document.getElementById('assignInput${stationIndex}').value)">Assign</button>
-                                  </div></div>
-                                  <div class="assigned-people">
-                                    <strong>Assigned People:</strong>
-                                    <ul>
-                                      ${station.assignedPeople.map((person, personIndex) => {
-                                        return `<li onclick="handlePersonClick(${personIndex}, ${stationIndex})">${person.name}</li>`;
-                                      }).join("")}
-                                    </ul>
-                                  </div>`;
+      
+          // Create separate elements for station name and assign controls
+          let stationHeader = document.createElement("div");
+          stationHeader.classList.add("station-name");
+          stationHeader.innerText = station.name;
+          stationHeader.addEventListener("click", () => removeStation(stationIndex));
+      
+          let assignControls = document.createElement("div");
+          assignControls.classList.add("assign-controls");
+          assignControls.innerHTML = `
+            <input type="number" id="assignInput${stationIndex}" placeholder="Assign">
+            <button onclick="assignPeople(${stationIndex}, 
+              document.getElementById('assignInput${stationIndex}').value)">Assign</button>
+          `;
+      
+          stationDiv.appendChild(stationHeader);
+          stationDiv.appendChild(assignControls);
+      
+          let assignedPeopleDiv = document.createElement("div");
+          assignedPeopleDiv.classList.add("assigned-people");
+          assignedPeopleDiv.innerHTML = `
+            <strong>Assigned People:</strong>
+            <ul>
+              ${station.assignedPeople.map((person, personIndex) => {
+                return `<li onclick="handlePersonClick(${personIndex}, ${stationIndex})">${person.name}</li>`;
+              }).join("")}
+            </ul>
+          `;
+          
+          stationDiv.appendChild(assignedPeopleDiv);
+      
           stationsList.appendChild(stationDiv);
         });
       }
+
 
     </script>
   </div>
