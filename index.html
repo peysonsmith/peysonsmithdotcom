@@ -137,8 +137,6 @@
       <button onclick="addStation()">Add Station</button>
 
       <input type="text" id="personInput" placeholder="Enter person's name" onkeypress="handleKeyPress(event, 'addPerson')">
-      <input type="text" id="startTimeInput" placeholder="Start Time">
-      <input type="text" id="endTimeInput" placeholder="End Time">
       <button onclick="addPerson()">Add Person</button>
     </div>
 
@@ -164,19 +162,12 @@
 
       function addPerson() {
         let newPersons = document.getElementById("personInput").value.trim().split(',').map(person => person.trim());
-        let startTime = document.getElementById("startTimeInput").value.trim();
-        let endTime = document.getElementById("endTimeInput").value.trim();
-
         newPersons.forEach(newPerson => {
-          if (newPerson && startTime && endTime) {
-            people.push({ name: newPerson, startTime: startTime, endTime: endTime });
+          if (newPerson) {
+            people.push({ name: newPerson, timeSlots: [] });
           }
         });
-
         document.getElementById("personInput").value = "";
-        document.getElementById("startTimeInput").value = "";
-        document.getElementById("endTimeInput").value = "";
-
         displayStations();
       }
 
@@ -219,6 +210,7 @@
           let stationDiv = document.createElement("div");
           stationDiv.classList.add("station");
       
+          // Create separate elements for station name and assign controls
           let stationHeader = document.createElement("div");
           stationHeader.classList.add("station-name");
           stationHeader.innerText = station.name;
@@ -241,9 +233,7 @@
             <strong>Assigned People:</strong>
             <ul>
               ${station.assignedPeople.map((person, personIndex) => {
-                return `<li onclick="handlePersonClick(${personIndex}, ${stationIndex})">
-                          ${person.name} - ${person.startTime} to ${person.endTime}
-                        </li>`;
+                return `<li onclick="handlePersonClick(${personIndex}, ${stationIndex})">${person.name}</li>`;
               }).join("")}
             </ul>
           `;
@@ -253,6 +243,8 @@
           stationsList.appendChild(stationDiv);
         });
       }
+
+
     </script>
   </div>
 
