@@ -135,18 +135,12 @@
     <div class="form-container">
       <input type="text" id="stationInput" placeholder="Enter station name" onkeypress="handleKeyPress(event, 'addStation')">
       <button onclick="addStation()">Add Station</button>
-
-      <input type="text" id="personInput" placeholder="Enter person's name" onkeypress="handleKeyPress(event, 'addPerson')">
-      <input type="text" id="startTimeInput" placeholder="Start time">
-      <input type="text" id="endTimeInput" placeholder="End time">
-      <button onclick="addPerson()">Add Person</button>
     </div>
 
     <div class="station-list" id="stationsList"></div>
 
     <script>
       let stations = [];
-      let people = [];
 
       function addStation() {
         let newStation = document.getElementById("stationInput").value.trim();
@@ -162,53 +156,25 @@
         displayStations();
       }
 
-      function addPerson() {
-        let personName = document.getElementById("personInput").value.trim();
-        let startTime = document.getElementById("startTimeInput").value.trim();
-        let endTime = document.getElementById("endTimeInput").value.trim();
-
-        if (personName && startTime && endTime) {
-          people.push({
-            name: personName,
-            startTime: startTime,
-            endTime: endTime
-          });
-          document.getElementById("personInput").value = "";
-          document.getElementById("startTimeInput").value = "";
-          document.getElementById("endTimeInput").value = "";
-          displayStations();
+      function addPersonToStation(stationIndex) {
+        let startTime = prompt("Enter start time:");
+        let endTime = prompt("Enter end time:");
+        if (startTime && endTime) {
+          let personName = prompt("Enter person's name:");
+          if (personName) {
+            stations[stationIndex].assignedPeople.push({
+              name: personName,
+              startTime: startTime,
+              endTime: endTime
+            });
+            displayStations();
+          }
         }
       }
 
       function removePerson(personIndex, stationIndex) {
         stations[stationIndex].assignedPeople.splice(personIndex, 1);
         displayStations();
-      }
-
-      function assignPeople(stationIndex, numAssignments) {
-        for (let i = 0; i < numAssignments; i++) {
-          if (people.length === 0) {
-            alert("No more people available!");
-            return;
-          }
-          let personAssigned = people.splice(Math.floor(Math.random() * people.length), 1)[0];
-          stations[stationIndex].assignedPeople.push(personAssigned);
-        }
-        displayStations();
-      }
-
-      function handleKeyPress(event, action) {
-        if (event.key === 'Enter') {
-          if (action === 'addStation') {
-            addStation();
-          } else if (action === 'addPerson') {
-            addPerson();
-          }
-        }
-      }
-
-      function handlePersonClick(personIndex, stationIndex) {
-        removePerson(personIndex, stationIndex);
       }
 
       function displayStations() {
@@ -224,16 +190,12 @@
           stationHeader.innerText = station.name;
           stationHeader.addEventListener("click", () => removeStation(stationIndex));
 
-          let assignControls = document.createElement("div");
-          assignControls.classList.add("assign-controls");
-          assignControls.innerHTML = `
-            <input type="number" id="assignInput${stationIndex}" placeholder="Assign">
-            <button onclick="assignPeople(${stationIndex}, 
-              document.getElementById('assignInput${stationIndex}').value)">Assign</button>
-          `;
+          let addPersonButton = document.createElement("button");
+          addPersonButton.textContent = "Add Person";
+          addPersonButton.onclick = () => addPersonToStation(stationIndex);
 
           stationDiv.appendChild(stationHeader);
-          stationDiv.appendChild(assignControls);
+          stationDiv.appendChild(addPersonButton);
 
           let assignedPeopleDiv = document.createElement("div");
           assignedPeopleDiv.classList.add("assigned-people");
@@ -242,7 +204,7 @@
             <ul>
               ${station.assignedPeople.map((person, personIndex) => {
                 return `
-                  <li onclick="handlePersonClick(${personIndex}, ${stationIndex})">
+                  <li onclick="removePerson(${personIndex}, ${stationIndex})">
                     ${person.name} - ${person.startTime} to ${person.endTime}
                   </li>`;
               }).join("")}
@@ -254,6 +216,16 @@
           stationsList.appendChild(stationDiv);
         });
       }
+
+      function handleKeyPress(event, action) {
+        if (event.key === 'Enter') {
+          if (action === 'addStation') {
+            addStation();
+          }
+        }
+      }
+
+      displayStations();
     </script>
   </div>
 
