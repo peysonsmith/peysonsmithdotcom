@@ -161,12 +161,14 @@
       }
 
       function addPerson() {
-        let newPerson = document.getElementById("personInput").value.trim();
-        if (newPerson) {
-          people.push({ name: newPerson, timeSlots: [] });
-          document.getElementById("personInput").value = "";
-          displayStations();
-        }
+        let newPersons = document.getElementById("personInput").value.trim().split(',').map(person => person.trim());
+        newPersons.forEach(newPerson => {
+          if (newPerson) {
+            people.push({ name: newPerson, timeSlots: [] });
+          }
+        });
+        document.getElementById("personInput").value = "";
+        displayStations();
       }
 
       function removePerson(personIndex, stationIndex) {
