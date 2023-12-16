@@ -210,7 +210,28 @@
           let stationDiv = document.createElement("div");
           stationDiv.classList.add("station");
       
-          // Create separate elements for station name and assign controls
+          let timeInputsDiv = document.createElement("div");
+          timeInputsDiv.classList.add("time-inputs");
+          timeInputsDiv.innerHTML = `
+            <input type="text" id="startTimeInput${stationIndex}" placeholder="Start Time">
+            <input type="text" id="endTimeInput${stationIndex}" placeholder="End Time">
+          `;
+      
+          let assignedPeopleDiv = document.createElement("div");
+          assignedPeopleDiv.classList.add("assigned-people");
+          assignedPeopleDiv.innerHTML = `<strong>Assigned People:</strong><ul>${station.assignedPeople.map((person, personIndex) => {
+            const startTime = personIndex * (24 / station.assignedPeople.length); // Assuming a 24-hour range for simplicity
+            const endTime = (personIndex + 1) * (24 / station.assignedPeople.length);
+      
+            return `<li onclick="handlePersonClick(${personIndex}, ${stationIndex})">
+                      ${person.name} 
+                      <span>(Start Time: ${startTime.toFixed(2)} - End Time: ${endTime.toFixed(2)})</span>
+                   </li>`;
+          }).join("")}</ul></div>`;
+      
+          stationDiv.appendChild(timeInputsDiv);
+          stationDiv.appendChild(assignedPeopleDiv);
+      
           let stationHeader = document.createElement("div");
           stationHeader.classList.add("station-name");
           stationHeader.innerText = station.name;
@@ -228,29 +249,6 @@
       
           stationDiv.appendChild(stationHeader);
           stationDiv.appendChild(assignControls);
-      
-          let assignedPeopleDiv = document.createElement("div");
-          assignedPeopleDiv.classList.add("assigned-people");
-          assignedPeopleDiv.innerHTML = `<strong>Assigned People:</strong><ul>${station.assignedPeople.map((person, personIndex) => {
-            const startTime = personIndex * (24 / station.assignedPeople.length); // Assuming a 24-hour range for simplicity
-            const endTime = (personIndex + 1) * (24 / station.assignedPeople.length);
-      
-            return `<li onclick="handlePersonClick(${personIndex}, ${stationIndex})">
-                      ${person.name} 
-                      <span>(Start Time: ${startTime.toFixed(2)} - End Time: ${endTime.toFixed(2)})</span>
-                   </li>`;
-          }).join("")}</ul></div>`;
-          
-          stationDiv.appendChild(assignedPeopleDiv);
-      
-          let timeInputsDiv = document.createElement("div");
-          timeInputsDiv.classList.add("time-inputs");
-          timeInputsDiv.innerHTML = `
-            <input type="text" id="startTimeInput${stationIndex}" placeholder="Start Time">
-            <input type="text" id="endTimeInput${stationIndex}" placeholder="End Time">
-          `;
-          
-          stationDiv.appendChild(timeInputsDiv);
       
           stationsList.appendChild(stationDiv);
         });
