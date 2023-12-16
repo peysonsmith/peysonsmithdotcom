@@ -220,8 +220,6 @@
           assignControls.classList.add("assign-controls");
           assignControls.innerHTML = `
             <input type="number" id="assignInput${stationIndex}" placeholder="Assign">
-            <input type="text" id="startTimeInput${stationIndex}" placeholder="Start Time">
-            <input type="text" id="endTimeInput${stationIndex}" placeholder="End Time">
             <button onclick="assignPeople(${stationIndex}, 
               document.getElementById('assignInput${stationIndex}').value,
               document.getElementById('startTimeInput${stationIndex}').value,
@@ -244,6 +242,15 @@
           }).join("")}</ul></div>`;
           
           stationDiv.appendChild(assignedPeopleDiv);
+      
+          let timeInputsDiv = document.createElement("div");
+          timeInputsDiv.classList.add("time-inputs");
+          timeInputsDiv.innerHTML = `
+            <input type="text" id="startTimeInput${stationIndex}" placeholder="Start Time">
+            <input type="text" id="endTimeInput${stationIndex}" placeholder="End Time">
+          `;
+          
+          stationDiv.appendChild(timeInputsDiv);
       
           stationsList.appendChild(stationDiv);
         });
