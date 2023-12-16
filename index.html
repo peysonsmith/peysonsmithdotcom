@@ -5,7 +5,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #d8f9ff;
+      background-color: #f4f4f4;
       margin: 20px;
       padding: 0;
     }
@@ -32,31 +32,12 @@
     .assigned-people {
       font-style: italic;
       color: #555;
-    }
 
     .station-buttons {
       margin-top: 10px;
     }
-
-    .station-buttons input[type="text"] {
-      margin-right: 5px;
-      padding: 5px;
-    }
-
-    .time-slot {
-      margin-top: 5px;
-    }
-
     .station-buttons button {
-      padding: 8px 15px;
-      background-color: #4caf50;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-
-    .station-buttons button:hover {
-      background-color: #45a049;
+      margin-right: 5px;
     }
   </style>
 </head>
@@ -88,9 +69,8 @@
     function addPerson() {
       let newPerson = document.getElementById("personInput").value.trim();
       if (newPerson) {
-        people.push({ name: newPerson, timeSlots: [] });
+        people.push(newPerson);
         document.getElementById("personInput").value = ""; // Clear the input field
-        displayStations();
       }
     }
 
@@ -106,29 +86,18 @@
       displayStations();
     }
 
-    function assignTimeSlot(stationIndex, personIndex, timeSlot) {
-      people[personIndex].timeSlots.push(timeSlot);
-      displayStations();
-    }
-
     function displayStations() {
       let stationsList = document.getElementById("stationsList");
       stationsList.innerHTML = ""; // Clear previous content
 
-      stations.forEach((station, stationIndex) => {
+      stations.forEach((station, index) => {
         let stationDiv = document.createElement("div");
         stationDiv.classList.add("station");
         stationDiv.innerHTML = `<div class="station-name">${station.name}</div>
-                                <div class="assigned-people">
-                                  ${station.assignedPeople.map((person, personIndex) => `
-                                    <div>${person.name}
-                                      <div class="station-buttons">
-                                        <input type="text" id="timeSlotInput${stationIndex}_${personIndex}" placeholder="Add time slot">
-                                        <button onclick="assignTimeSlot(${stationIndex}, ${personIndex}, document.getElementById('timeSlotInput${stationIndex}_${personIndex}').value)">Add</button>
-                                      </div>
-                                      <div class="time-slot">${person.timeSlots.join(", ")}</div>
-                                    </div>
-                                  `).join("")}
+                                <div class="assigned-people">${station.assignedPeople.join(", ")}</div>
+                                <div class="station-buttons">
+                                  <input type="number" id="assignInput${index}" placeholder="Assign">
+                                  <button onclick="assignPeople(${index}, document.getElementById('assignInput${index}').value)">Assign</button>
                                 </div>`;
         stationsList.appendChild(stationDiv);
       });
@@ -140,3 +109,4 @@
 
 </body>
 </html>
+
