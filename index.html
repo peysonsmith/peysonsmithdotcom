@@ -104,6 +104,11 @@
       }
     }
 
+    function removeStation(index) {
+      stations.splice(index, 1);
+      displayStations();
+    }
+
     function addPerson() {
       let newPerson = document.getElementById("personInput").value.trim();
       if (newPerson) {
@@ -111,6 +116,11 @@
         document.getElementById("personInput").value = ""; // Clear the input field
         displayStations();
       }
+    }
+
+    function removePerson(personIndex, stationIndex) {
+      stations[stationIndex].assignedPeople.splice(personIndex, 1);
+      displayStations();
     }
 
     function assignPeople(stationIndex, numAssignments) {
@@ -130,34 +140,6 @@
       displayStations();
     }
 
-    function displayStations() {
-      let stationsList = document.getElementById("stationsList");
-      stationsList.innerHTML = ""; // Clear previous content
-
-      stations.forEach((station, index) => {
-        let stationDiv = document.createElement("div");
-        stationDiv.classList.add("station");
-        stationDiv.innerHTML = `<div class="station-name">${station.name}</div>
-                                <div class="assigned-people">
-                                  ${station.assignedPeople.map((person, personIndex) => {
-                                    return `<div>${person.name} - Time Slots: 
-                                            <input type="text" id="timeSlotInput${personIndex}_${index}" 
-                                              placeholder="Add time slot">
-                                            <button onclick="addTimeSlot(${index}, ${personIndex}, 
-                                              document.getElementById('timeSlotInput${personIndex}_${index}').value)">
-                                              Add Time Slot</button></div>`;
-                                  }).join("<br>")}</div>
-                                <div class="station-buttons">
-                                  <input type="number" id="assignInput${index}" placeholder="Assign">
-                                  <button onclick="assignPeople(${index}, document.getElementById('assignInput${index}').value)">Assign</button>
-                                </div>`;
-        stationsList.appendChild(stationDiv);
-      });
-    }
-
-    // Display initial stations and assigned people
-    displayStations();
-    
     function handleKeyPress(event, action) {
       if (event.key === 'Enter') {
         if (action === 'addStation') {
@@ -166,6 +148,35 @@
           addPerson();
         }
       }
+    }
+
+    function displayStations() {
+      let stationsList = document.getElementById("stationsList");
+      stationsList.innerHTML = ""; // Clear previous content
+
+      stations.forEach((station, stationIndex) => {
+        let stationDiv = document.createElement("div");
+        stationDiv.classList.add("station");
+        stationDiv.innerHTML = `<div class="station-name">${station.name} 
+                                <button onclick="removeStation(${stationIndex})">Remove</button></div>
+                                <div class="assigned-people">
+                                  ${station.assignedPeople.map((person, personIndex) => {
+                                    return `<div>${person.name} - Time Slots: 
+                                            <input type="text" class="time-slot-input" 
+                                              id="timeSlotInput${personIndex}_${stationIndex}" 
+                                              placeholder="Add time slot">
+                                            <button onclick="addTimeSlot(${stationIndex}, ${personIndex}, 
+                                              document.getElementById('timeSlotInput${personIndex}_${stationIndex}').value)">
+                                              Add Time Slot</button>
+                                            <button onclick="removePerson(${personIndex}, ${stationIndex})">Remove</button></div>`;
+                                  }).join("<br>")}</div>
+                                <div class="station-buttons">
+                                  <input type="number" id="assignInput${stationIndex}" placeholder="Assign">
+                                  <button onclick="assignPeople(${stationIndex}, 
+                                    document.getElementById('assignInput${stationIndex}').value)">Assign</button>
+                                </div>`;
+        stationsList.appendChild(stationDiv);
+      });
     }
   </script>
 
