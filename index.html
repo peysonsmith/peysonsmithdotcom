@@ -5,14 +5,59 @@
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #d8f9ff; 
-      margin: 20px;
+      background-color: #f4f4f4; /* Light gray background */
+      margin: 0;
       padding: 0;
     }
 
-    h1 {
+    .header {
+      background-color: #333; /* Dark header background */
+      color: #fff; /* Text color for header */
+      padding: 10px;
       text-align: center;
-      color: #333;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+
+    .form-container {
+      background-color: #fff; /* White form background */
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+    }
+
+    .form-container input[type="text"],
+    .form-container button {
+      margin-right: 10px;
+      margin-bottom: 10px;
+      padding: 8px 16px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .form-container input[type="text"] {
+      width: calc(70% - 20px); /* Adjust width for input */
+    }
+
+    .form-container button {
+      width: calc(30% - 20px); /* Adjust width for button */
+      background-color: #3498db; /* Blue button */
+      color: #fff;
+      transition: background-color 0.3s ease;
+    }
+
+    .form-container button:hover {
+      background-color: #2980b9; /* Darker blue on hover */
+    }
+
+    .station-list {
+      margin-top: 20px;
     }
 
     .station {
@@ -77,15 +122,20 @@
 </head>
 <body>
 
-  <h1>Station Assignment</h1>
+  <div class="header">
+    <h1>Station Assignment</h1>
+  </div>
 
-  <div id="stationsList"></div>
+  <div class="container">
+    <div class="form-container">
+      <input type="text" id="stationInput" placeholder="Enter station name" onkeypress="handleKeyPress(event, 'addStation')">
+      <button onclick="addStation()">Add Station</button>
 
-  <input type="text" id="stationInput" placeholder="Enter station name" onkeypress="handleKeyPress(event, 'addStation')">
-  <button onclick="addStation()">Add Station</button>
+      <input type="text" id="personInput" placeholder="Enter person's name" onkeypress="handleKeyPress(event, 'addPerson')">
+      <button onclick="addPerson()">Add Person</button>
+    </div>
 
-  <input type="text" id="personInput" placeholder="Enter person's name" onkeypress="handleKeyPress(event, 'addPerson')">
-  <button onclick="addPerson()">Add Person</button>
+    <div class="station-list" id="stationsList"></div>
 
   <script>
     let stations = [];
