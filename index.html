@@ -5,75 +5,92 @@
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
+      background-color: #f0f0f0;
+      margin: 20px;
       padding: 0;
     }
 
     h1 {
       text-align: center;
       color: #333;
-      margin-top: 20px;
-    }
-
-    .add-section {
-      background-color: #3498db;
-      padding: 10px;
-      margin-bottom: 10px;
-      color: #fff;
-    }
-
-    .add-section input[type="text"],
-    .add-section button {
-      padding: 6px 12px;
-      margin-right: 10px;
-      border: none;
-      border-radius: 5px;
-      font-size: 14px;
-    }
-
-    .stations-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-start;
-      align-items: flex-start;
     }
 
     .station {
       background-color: #fff;
-      padding: 10px;
-      margin: 5px;
-      border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      cursor: pointer;
-      transition: background-color 0.3s ease, text-decoration 0.3s ease;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
-    .station:hover {
+    .station-name {
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
+
+    .assigned-people {
+      color: #34495e;
+      font-size: 18px;
+    }
+
+    .assigned-people div {
+      display: inline-block;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    .assigned-people div:hover {
       text-decoration: line-through;
     }
 
-    .station:hover .remove-icon {
-      display: block;
+    .station-buttons {
+      margin-top: 20px;
     }
 
-    .remove-icon {
-      display: none;
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      background-color: #e74c3c;
+    .station-buttons button {
+      padding: 8px 16px;
+      font-size: 16px;
+      background-color: #3498db;
       color: #fff;
       border: none;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      font-size: 12px;
+      border-radius: 5px;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
-    .remove-icon:hover {
-      background-color: #c0392b;
+    .station-buttons button:hover {
+      background-color: #2980b9;
+    }
+
+    .time-slot-input {
+      margin-top: 10px;
+      padding: 8px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .add-time-slot-btn {
+      margin-top: 5px;
+      padding: 6px 12px;
+      font-size: 14px;
+      background-color: #2ecc71;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .add-time-slot-btn:hover {
+      background-color: #27ae60;
+    }
+
+    /* Add the strike-through effect */
+    .strike-through {
+      text-decoration: line-through;
     }
   </style>
 </head>
@@ -81,15 +98,13 @@
 
   <h1>Station Assignment</h1>
 
-  <div class="add-section">
-    <input type="text" id="stationInput" placeholder="Enter station name" onkeypress="handleKeyPress(event, 'addStation')">
-    <button onclick="addStation()">Add Station</button>
+  <div id="stationsList"></div>
 
-    <input type="text" id="personInput" placeholder="Enter person's name" onkeypress="handleKeyPress(event, 'addPerson')">
-    <button onclick="addPerson()">Add Person</button>
-  </div>
+  <input type="text" id="stationInput" placeholder="Enter station name" onkeypress="handleKeyPress(event, 'addStation')">
+  <button onclick="addStation()">Add Station</button>
 
-  <div class="stations-container" id="stationsList"></div>
+  <input type="text" id="personInput" placeholder="Enter person's name" onkeypress="handleKeyPress(event, 'addPerson')">
+  <button onclick="addPerson()">Add Person</button>
 
   <script>
     let stations = [];
@@ -150,6 +165,15 @@
       }
     }
 
+    function handlePersonClick(personIndex, stationIndex) {
+      removePerson(personIndex, stationIndex);
+    }
+
+    function toggleStationStrikeThrough(stationIndex) {
+      const stationNameDiv = document.querySelector(`.station-name-${stationIndex}`);
+      stationNameDiv.classList.toggle("strike-through");
+    }
+
     function handleStationClick(stationIndex) {
       removeStation(stationIndex);
     }
@@ -161,10 +185,22 @@
       stations.forEach((station, stationIndex) => {
         let stationDiv = document.createElement("div");
         stationDiv.classList.add("station");
-        stationDiv.innerHTML = `
-          <div class="remove-icon" onclick="removeStation(${stationIndex})">x</div>
-          <div onclick="handleStationClick(${stationIndex})">${station.name}</div>
-        `;
+        stationDiv.innerHTML = `<div class="station-name station-name-${stationIndex}" 
+                                onmouseover="toggleStationStrikeThrough(${stationIndex})" 
+                                onmouseleave="toggleStationStrikeThrough(${stationIndex})" 
+                                onclick="handleStationClick(${stationIndex})">
+                                  ${station.name} 
+                                  <button onclick="removeStation(${stationIndex})">Remove</button>
+                                </div>
+                                <div class="assigned-people">
+                                  ${station.assignedPeople.map((person, personIndex) => {
+                                    return `<div onclick="handlePersonClick(${personIndex}, ${stationIndex})">${person.name}</div>`;
+                                  }).join("")}</div>
+                                <div class="station-buttons">
+                                  <input type="number" id="assignInput${stationIndex}" placeholder="Assign">
+                                  <button onclick="assignPeople(${stationIndex}, 
+                                    document.getElementById('assignInput${stationIndex}').value)">Assign</button>
+                                </div>`;
         stationsList.appendChild(stationDiv);
       });
     }
