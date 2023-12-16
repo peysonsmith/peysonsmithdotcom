@@ -36,13 +36,17 @@
       font-size: 18px;
     }
 
-    .assigned-people div {
-      display: inline-block;
-      margin-right: 10px;
-      cursor: pointer;
+    .assigned-people ul {
+      list-style-type: none; /* Remove default list styling */
+      padding-left: 0; /* Remove default padding */
     }
 
-    .assigned-people div:hover {
+    .assigned-people ul li {
+      cursor: pointer;
+      margin-bottom: 5px;
+    }
+
+    .assigned-people ul li:hover {
       text-decoration: line-through;
     }
 
@@ -169,9 +173,13 @@
                                   ${station.name}
                                 </div>
                                 <div class="assigned-people">
-                                  ${station.assignedPeople.map((person, personIndex) => {
-                                    return `<div onclick="handlePersonClick(${personIndex}, ${stationIndex})">${person.name}</div>`;
-                                  }).join("")}</div>
+                                  <strong>Assigned People:</strong>
+                                  <ul>
+                                    ${station.assignedPeople.map((person, personIndex) => {
+                                      return `<li onclick="handlePersonClick(${personIndex}, ${stationIndex})">${person.name}</li>`;
+                                    }).join("")}
+                                  </ul>
+                                </div>
                                 <div class="station-buttons">
                                   <input type="number" id="assignInput${stationIndex}" placeholder="Assign">
                                   <button onclick="assignPeople(${stationIndex}, 
