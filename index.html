@@ -157,6 +157,16 @@
 
     // Display initial stations and assigned people
     displayStations();
+    
+    function handleKeyPress(event, action) {
+      if (event.key === 'Enter') {
+        if (action === 'addStation') {
+          addStation();
+        } else if (action === 'addPerson') {
+          addPerson();
+        }
+      }
+    }
   </script>
 
 </body>
